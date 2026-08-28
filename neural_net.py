@@ -12,6 +12,9 @@ b2 = np.zeros((output_size, 1))
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
+def sigmoid_derivative(x):
+    return sigmoid(x) * (1 - sigmoid(x))
+
 def neuron_forward(X):
     Z1 = np.dot(W1, X) + b1
     A1 = sigmoid(Z1)
