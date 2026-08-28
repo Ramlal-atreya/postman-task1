@@ -30,7 +30,19 @@ y=[]
 
 Z1, A1, Z2, A2 = neuron_forward(X)
 
+print("X:", X.shape)
+print("Z1:", Z1.shape)
+print("A1:", A1.shape)
+print("Z2:", Z2.shape)
+print("A2:", A2.shape)
+
 dZ2 = (A2 - Y) * sigmoid_derivative(Z2)
 dW2 = np.dot(dZ2, A1.T)
 db2 = dZ2
 dA1 = np.dot(W2.T, dZ2)
+
+print("OUTPUT.....")
+print("dZ2:", dZ2.shape)
+print("dW2:", dW2.shape)
+print("db2:", db2.shape)
+print("dA1:", dA1.shape)
