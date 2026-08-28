@@ -25,8 +25,16 @@ def neuron_forward(X):
     return Z1, A1, Z2, A2
 
 
-X=[]
-y=[]
+X = np.array([
+    [0.6],
+    [0.3],
+    [0.8]
+])
+
+Y = np.array([
+    [1.0],
+    [0.0]
+])
 
 Z1, A1, Z2, A2 = neuron_forward(X)
 
