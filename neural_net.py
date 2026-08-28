@@ -15,9 +15,15 @@ def sigmoid(x):
 def sigmoid_derivative(x):
     return sigmoid(x) * (1 - sigmoid(x))
 
+
+
 def neuron_forward(X):
     Z1 = np.dot(W1, X) + b1
     A1 = sigmoid(Z1)
     Z2 = np.dot(W2, A1) + b2
     A2 = sigmoid(Z2)
-    return A2
+    dZ2 = (A2 - Y) * sigmoid_derivative(Z2)
+    dW2 = np.dot(dZ2, A1.T)
+    db2 = dZ2
+    dA1 = np.dot(W2.T, dZ2)
+    return Z1, A1, Z2, A2
