@@ -1,4 +1,5 @@
 import numpy as np
+np.random.seed(42)
 
 input_size = 3
 hidden_size = 4
