@@ -9,7 +9,7 @@ input_dim = 784
 hidden_dim = 64
 output_dim = 10
 
-lr = 0.1
+lr = 0.4
 epochs = 200
 
 def sigmoid(x):
@@ -230,5 +230,5 @@ plt.ylabel("Loss (relative to initial)")
 plt.title("Relative Training Progress")
 plt.legend()
 plt.grid(True)
-plt.savefig("loss_comparison_normalized.png")
+plt.savefig("loss_comparison_final.png")
 plt.show()
