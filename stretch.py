@@ -43,7 +43,7 @@ def cross_entropy(predictions, targets):
 
 
 def mse_loss(predictions, targets):
-    return np.mean((predictions - targets) ** 2)
+    return np.mean(np.sum((predictions - targets) ** 2, axis=1))
 
 
 
@@ -220,23 +220,15 @@ for epoch in range(epochs):
         print(f"[Stretch] epoch {epoch}, loss {loss:.4f}")
 
 
-plt.figure(figsize=(8, 5))
+losses_original_norm = np.array(losses_original) / losses_original[0]
+losses_stretch_norm = np.array(losses_stretch) / losses_stretch[0]
 
-plt.plot(
-    losses_original,
-    label="Sigmoid + Cross Entropy"
-)
-
-plt.plot(
-    losses_stretch,
-    label="ReLU + MSE + Momentum"
-)
-
+plt.plot(losses_original_norm, label="Sigmoid + Cross Entropy")
+plt.plot(losses_stretch_norm, label="ReLU + MSE + Momentum")
 plt.xlabel("Epoch")
-plt.ylabel("Loss")
-plt.title("Comparison of Training Loss")
+plt.ylabel("Loss (relative to initial)")
+plt.title("Relative Training Progress")
 plt.legend()
 plt.grid(True)
-
-plt.savefig("loss_comparison.png")
+plt.savefig("loss_comparison_normalized.png")
 plt.show()
