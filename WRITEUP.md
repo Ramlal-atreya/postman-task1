@@ -177,6 +177,28 @@ and also added the seed for the numpy random rand function.
 
 Wrote the Writeup.mb (4th wall broken haha).
 
+-- Thenth commit
+
+started with the stretch using ReLU and MSE
+
+coded it simple and made the comparison
+
+-- Eleventh commit
+
+The graph was not normalized so botht he scripts ware outputting on different scales
+so i got them into the common scale
+
+-- Twelth commit
+
+I tweaked the lr value so that both were represented well
+any lr over 0.35 caused a lot of noise in the ReLU and MSE graph 
+but the original needed an lr of 0.6 to reduce loss quickly
+so took the best of both worlds at 0.4.
+
+Only thing left is writing the Readme and IM DONEEE!!!!
+
+
+
 
 
 
