@@ -50,7 +50,7 @@ def backward(X, Y, a1, a2, W1, W2):
 
     da1 = np.dot(dz2, W2.T)
 
-    dz1 = da1 * sigmoid_derivative(a1)
+    dz1 = da1 * sigmoid_derivative(z1)
 
     dW1 = np.dot(X.T, dz1)
     db1 = np.sum(dz1, axis=0)
