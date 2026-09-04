@@ -5,6 +5,8 @@ from torchvision import datasets
 
 np.random.seed(42)
 
+# Define the dimensions of the neural network
+
 input_dim = 784
 hidden_dim = 64
 output_dim = 10
@@ -12,6 +14,7 @@ output_dim = 10
 lr = 0.4
 epochs = 200
 
+# Define activation functions and their derivatives
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
@@ -20,6 +23,7 @@ def sigmoid_derivative(x):
     s = sigmoid(x)
     return s * (1 - s)
 
+# Define the relu and its derivative
 
 def relu(x):
     return np.maximum(0, x)
@@ -28,6 +32,7 @@ def relu(x):
 def relu_derivative(x):
     return (x > 0).astype(np.float64)
 
+# Define the softmax function and cross-entropy loss function
 
 def softmax(x):
     x = x - np.max(x, axis=1, keepdims=True)
@@ -41,11 +46,12 @@ def cross_entropy(predictions, targets):
         np.sum(targets * np.log(predictions), axis=1)
     )
 
+#Define the mse loss function
 
 def mse_loss(predictions, targets):
     return np.mean(np.sum((predictions - targets) ** 2, axis=1))
 
-
+# Define the backward propagation function for sigmoid + cross-entropy
 
 def backward_sigmoid_ce(X, Y, z1, a1, a2, W2):
     m = X.shape[0]
@@ -65,7 +71,7 @@ def backward_sigmoid_ce(X, Y, z1, a1, a2, W2):
     return dW1, db1, dW2, db2
 
 
-
+# Define the backward propagation function for relu + mse + momentum
 
 def backward_relu_mse(X, Y, z1, a1, a2, W2):
     m = X.shape[0]
@@ -92,6 +98,7 @@ def backward_relu_mse(X, Y, z1, a1, a2, W2):
     return dW1, db1, dW2, db2
 
 
+# Load the MNIST dataset and preprocess it for training
 
 train_set = datasets.MNIST(
     root="./data",
@@ -104,6 +111,8 @@ test_set = datasets.MNIST(
     train=False,
     download=True
 )
+
+#Get the training and test data and normalize it to [0, 1]
 
 X_train = train_set.data.numpy().reshape(-1, 784).astype(np.float64)
 y_train = train_set.targets.numpy()
@@ -122,7 +131,7 @@ Y_small = np.eye(10)[y_small]
 print("X_small:", X_small.shape)
 print("Y_small:", Y_small.shape)
 
-
+#get the weights and biases for the original and stretch networks
 
 W1 = np.random.randn(input_dim, hidden_dim) * np.sqrt(1 / input_dim)
 b1 = np.zeros(hidden_dim)
@@ -131,6 +140,8 @@ W2 = np.random.randn(hidden_dim, output_dim) * np.sqrt(1 / hidden_dim)
 b2 = np.zeros(output_dim)
 
 losses_original = []
+
+#execute the training loop for the original network (sigmoid + cross-entropy) and the stretch network (ReLU + MSE + momentum)
 
 for epoch in range(epochs):
 
@@ -179,6 +190,7 @@ vb1 = np.zeros_like(b1)
 vW2 = np.zeros_like(W2)
 vb2 = np.zeros_like(b2)
 
+#execute the training loop for the stretch network (ReLU + MSE + momentum)
 
 for epoch in range(epochs):
 
@@ -203,6 +215,7 @@ for epoch in range(epochs):
         a2,
         W2
     )
+# using momentum to update the weights and biases for the stretch network
 
     vW1 = momentum * vW1 + dW1
     vb1 = momentum * vb1 + db1
@@ -222,6 +235,9 @@ for epoch in range(epochs):
 
 losses_original_norm = np.array(losses_original) / losses_original[0]
 losses_stretch_norm = np.array(losses_stretch) / losses_stretch[0]
+
+
+# Plot the training loss for both networks
 
 plt.plot(losses_original_norm, label="Sigmoid + Cross Entropy")
 plt.plot(losses_stretch_norm, label="ReLU + MSE + Momentum")

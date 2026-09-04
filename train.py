@@ -5,9 +5,14 @@ from torchvision import datasets
 
 np.random.seed(42)
 
+# Define the dimensions of the neural network
+# The dimentions are for MNIST dataset, which has 784 input features (28x28 images), 64 hidden units, and 10 output classes (digits 0-9)
+
 input_dim = 784
 hidden_dim = 64
 output_dim = 10
+
+# Set hyperparameters for training
 
 W1 = np.random.randn(input_dim, hidden_dim) * np.sqrt(1 / input_dim)
 b1 = np.zeros(hidden_dim)
@@ -15,9 +20,13 @@ b1 = np.zeros(hidden_dim)
 W2 = np.random.randn(hidden_dim, output_dim) * np.sqrt(1 / hidden_dim)
 b2 = np.zeros(output_dim)
 
+# Set learning rate and number of epochs for training
+
 lr = 0.1
 epochs = 200
 losses = []
+
+# Define activation functions and their derivatives
 
 
 def sigmoid(x):
@@ -28,6 +37,7 @@ def sigmoid_derivative(x):
     s = sigmoid(x)
     return s * (1 - s)
 
+# Define the softmax function and cross-entropy loss function
 
 def softmax(x):
     x = x - np.max(x, axis=1, keepdims=True)
@@ -39,6 +49,8 @@ def cross_entropy(predictions, targets):
     predictions = np.clip(predictions, 1e-12, 1 - 1e-12)
     return -np.mean(np.sum(targets * np.log(predictions), axis=1))
 
+
+# Define the backward propagation function
 
 def backward(X, Y, a1, a2, W1, W2):
     m = X.shape[0]
@@ -57,6 +69,7 @@ def backward(X, Y, a1, a2, W1, W2):
 
     return dW1, db1, dW2, db2
 
+# Load the MNIST dataset and preprocess it for training
 
 train_set = datasets.MNIST(
     root="./data",
@@ -69,6 +82,8 @@ test_set = datasets.MNIST(
     train=False,
     download=True
 )
+
+# Preprocess the data by flattening the images and normalizing pixel values to the range [0, 1]
 
 X_train = train_set.data.numpy().reshape(-1, 784).astype(np.float64)
 y_train = train_set.targets.numpy()
@@ -87,6 +102,7 @@ Y_small = np.eye(10)[y_small]
 print("X_small:", X_small.shape)
 print("Y_small:", Y_small.shape)
 
+# Train the neural network using the small subset of the MNIST dataset and plot the training loss over epochs
 
 for epoch in range(epochs):
 
@@ -118,10 +134,13 @@ for epoch in range(epochs):
         print(f"epoch {epoch}, loss {loss:.4f}")
 
 
+# Plot the training loss over epochs
+
 plt.plot(losses)
 plt.xlabel("epoch")
 plt.ylabel("loss")
 plt.title("training loss")
 plt.grid(True)
+#change the file name to save the plot as a PNG image
 plt.savefig("loss_curve.png")
 plt.show()
